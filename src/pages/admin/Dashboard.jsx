@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Package, Users, ShoppingBag, TrendingUp, Settings, Search } from 'lucide-react';
 import { getAllOrdersAdmin, getProducts, updateOrderStatus, updateOrderCodCollection } from '../../firebase/firestore';
 import OrderCard from '../../components/OrderCard';
+import OrderDetailsModal from '../../components/OrderDetailsModal';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
@@ -11,6 +12,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -241,9 +243,7 @@ const Dashboard = () => {
                   order={order} 
                   viewMode="admin" 
                   onStatusUpdate={handleStatusChange} 
-                  onViewDetails={(order) => { 
-                    alert(`Order Details view for admin coming soon for ${order.orderId}. Customer: ${order.customerDetails?.name}`)
-                  }} 
+                  onViewDetails={(order) => setSelectedOrder(order)} 
                 />
                 
                 {/* Specific overlay for marking COD as collected on Delivered Orders (Only for COD Orders) */}
@@ -265,6 +265,14 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+      
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <OrderDetailsModal 
+          order={selectedOrder} 
+          onClose={() => setSelectedOrder(null)} 
+        />
+      )}
     </div>
   );
 };
