@@ -34,10 +34,20 @@ const Dashboard = () => {
     try {
       await updateOrderStatus(orderId, newStatus, `Status manually updated to ${newStatus}`, 'admin');
       
+      let codCollectedUpdate = false;
+      const order = orders.find(o => o.id === orderId);
+      
+      // Auto-collect COD if order is marked as delivered
+      if (newStatus === 'delivered' && order && order.paymentMethod === 'COD' && !order.deliveryDetails?.codCollected) {
+        await updateOrderCodCollection(orderId, true);
+        codCollectedUpdate = true;
+      }
+
       setOrders(orders.map(o => o.id === orderId ? { 
         ...o, 
         orderStatus: newStatus,
-        statusHistory: [...(o.statusHistory || []), { status: newStatus, timestamp: { toDate: () => new Date() } }]
+        statusHistory: [...(o.statusHistory || []), { status: newStatus, timestamp: { toDate: () => new Date() } }],
+        deliveryDetails: codCollectedUpdate ? { ...o.deliveryDetails, codCollected: true } : o.deliveryDetails
       } : o));
       toast.success('Order status updated');
     } catch (err) {
@@ -62,17 +72,27 @@ const Dashboard = () => {
   const totalOrders = orders.length;
   const uniqueCustomers = new Set(orders.map(o => o.userId)).size;
   
-  // Only count revenue from Delivered orders where COD is collected
+  // Calculate Total Revenue (Includes Online payments and collected COD)
   const totalRevenue = orders.reduce((sum, order) => {
-    if (order.orderStatus === 'delivered' && order.deliveryDetails?.codCollected) {
+    if (order.orderStatus === 'cancelled') return sum;
+    
+    if (order.paymentMethod === 'COD') {
+      if (order.orderStatus === 'delivered' && order.deliveryDetails?.codCollected) {
+        return sum + (order.pricing?.total || 0);
+      }
+    } else {
+      // Online payments are already collected
       return sum + (order.pricing?.total || 0);
     }
     return sum;
   }, 0);
 
+  // Pending COD only applies to COD orders
   const pendingCodAmount = orders.reduce((sum, order) => {
-    if (order.orderStatus === 'out_for_delivery' || (order.orderStatus === 'delivered' && !order.deliveryDetails?.codCollected)) {
-      return sum + (order.pricing?.total || 0);
+    if (order.paymentMethod === 'COD') {
+      if (order.orderStatus === 'out_for_delivery' || (order.orderStatus === 'delivered' && !order.deliveryDetails?.codCollected)) {
+        return sum + (order.pricing?.total || 0);
+      }
     }
     return sum;
   }, 0);
@@ -131,7 +151,7 @@ const Dashboard = () => {
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total COD Collected</p>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Revenue Collected</p>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">₹{totalRevenue.toLocaleString('en-IN')}</h3>
           </div>
         </div>
