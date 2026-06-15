@@ -43,5 +43,5 @@ export const calculateOrderPricing = (subtotal) => {
 
 // Format currency
 export const formatCurrency = (amount) => {
-  return `₹${amount.toLocaleString('en-IN')}`;
+  return `₹${(amount || 0).toLocaleString('en-IN')}`;
 };
