@@ -56,9 +56,18 @@ const OrderDetailsModal = ({ order, onClose }) => {
               </h3>
               <div className="space-y-2">
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {order.customerDetails?.address || 'No address provided'}
+                  {typeof order.customerDetails?.address === 'object' ? (
+                    <>
+                      {order.customerDetails?.address?.line1 && <>{order.customerDetails.address.line1}<br/></>}
+                      {order.customerDetails?.address?.line2 && <>{order.customerDetails.address.line2}<br/></>}
+                      {order.customerDetails?.address?.city && <>{order.customerDetails.address.city}</>}
+                      {order.customerDetails?.address?.state && <>, {order.customerDetails.address.state}</>}
+                      {order.customerDetails?.address?.pincode && <> - {order.customerDetails.address.pincode}</>}
+                    </>
+                  ) : (
+                    order.customerDetails?.address || 'No address provided'
+                  )}
                   {order.customerDetails?.landmark && <><br/>Landmark: {order.customerDetails.landmark}</>}
-                  <br/>PIN: <span className="font-semibold">{order.customerDetails?.pincode || 'N/A'}</span>
                 </p>
               </div>
             </div>
