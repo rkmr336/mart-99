@@ -231,22 +231,8 @@ const Dashboard = () => {
                   viewMode="admin" 
                   onStatusUpdate={handleStatusChange} 
                   onViewDetails={(order) => setSelectedOrder(order)} 
+                  onCodCollected={handleCodCollected}
                 />
-                
-                {/* Specific overlay for marking COD as collected on Delivered Orders (Only for COD Orders) */}
-                {order.paymentMethod === 'COD' && ['delivered', 'out_for_delivery'].includes(order.orderStatus) && (
-                  <div className="sm:absolute sm:bottom-4 sm:right-4 mt-2 sm:mt-0 bg-white dark:bg-slate-800 p-2 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 z-10 w-fit">
-                     <label className="flex items-center gap-2 cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        checked={order.deliveryDetails?.codCollected || false}
-                        onChange={() => handleCodCollected(order.id, order.deliveryDetails?.codCollected)}
-                        className="text-green-600 rounded focus:ring-green-500 w-5 h-5 border-gray-300" 
-                      />
-                      <span className="text-sm font-bold text-gray-800 dark:text-gray-200">COD Collected</span>
-                    </label>
-                  </div>
-                )}
               </div>
             ))}
           </div>
