@@ -35,21 +35,11 @@ const Dashboard = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await updateOrderStatus(orderId, newStatus, `Status manually updated to ${newStatus}`, 'admin');
-      
-      let codCollectedUpdate = false;
-      const order = orders.find(o => o.id === orderId);
-      
-      // Auto-collect COD if order is marked as delivered
-      if (newStatus === 'delivered' && order && order.paymentMethod === 'COD' && !order.deliveryDetails?.codCollected) {
-        await updateOrderCodCollection(orderId, true);
-        codCollectedUpdate = true;
-      }
 
       setOrders(orders.map(o => o.id === orderId ? { 
         ...o, 
         orderStatus: newStatus,
-        statusHistory: [...(o.statusHistory || []), { status: newStatus, timestamp: { toDate: () => new Date() } }],
-        deliveryDetails: codCollectedUpdate ? { ...o.deliveryDetails, codCollected: true } : o.deliveryDetails
+        statusHistory: [...(o.statusHistory || []), { status: newStatus, timestamp: { toDate: () => new Date() } }]
       } : o));
       toast.success('Order status updated');
     } catch (err) {
@@ -105,9 +95,6 @@ const Dashboard = () => {
     // Filter by tab
     if (activeTab !== 'all') {
       result = result.filter(o => o.orderStatus === activeTab);
-    } else {
-      // Hide cancelled orders from the main 'All' view to keep it clean
-      result = result.filter(o => o.orderStatus !== 'cancelled');
     }
     
     // Filter by search query
