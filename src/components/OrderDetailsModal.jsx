@@ -106,9 +106,23 @@ const OrderDetailsModal = ({ order, onClose }) => {
                 <span>Subtotal</span>
                 <span>{formatCurrency(order.pricing?.subtotal || 0)}</span>
               </div>
+              {(order.pricing?.cgst != null || order.pricing?.sgst != null) && (
+                <>
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>CGST (5%)</span>
+                    <span>{formatCurrency(order.pricing?.cgst || 0)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>SGST (5%)</span>
+                    <span>{formatCurrency(order.pricing?.sgst || 0)}</span>
+                  </div>
+                </>
+              )}
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                 <span>Delivery Fee</span>
-                <span>{order.pricing?.deliveryFee === 0 ? 'Free' : formatCurrency(order.pricing?.deliveryFee)}</span>
+                <span className={`${(order.pricing?.deliveryCharge === 0) ? 'text-green-600 dark:text-green-400 font-semibold' : ''}`}>
+                  {(order.pricing?.deliveryCharge === 0) ? 'FREE' : formatCurrency(order.pricing?.deliveryCharge || 0)}
+                </span>
               </div>
             </div>
             <div className="pt-4 border-t border-brand-200 dark:border-brand-800 flex justify-between items-center">
