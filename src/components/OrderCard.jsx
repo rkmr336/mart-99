@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { formatCurrency } from '../utils/orderHelpers';
 
-const OrderCard = ({ order, viewMode = 'user', onStatusUpdate, onViewDetails }) => {
+const OrderCard = ({ order, viewMode = 'user', onStatusUpdate, onViewDetails, onCodCollected }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'delivered': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
@@ -75,9 +75,23 @@ const OrderCard = ({ order, viewMode = 'user', onStatusUpdate, onViewDetails }) 
           )}
         </div>
         
-        <button onClick={() => onViewDetails(order)} className="flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 transition-colors">
-          {viewMode === 'admin' ? 'Manage Order' : 'Track Order'} <ChevronRight className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-3 flex-wrap">
+          {viewMode === 'admin' && order.paymentMethod === 'COD' && ['delivered', 'out_for_delivery'].includes(order.orderStatus) && (
+            <label className="flex items-center gap-2 cursor-pointer bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm">
+              <input 
+                type="checkbox" 
+                checked={order.deliveryDetails?.codCollected || false}
+                onChange={() => onCodCollected && onCodCollected(order.id, order.deliveryDetails?.codCollected)}
+                className="text-green-600 rounded focus:ring-green-500 w-4.5 h-4.5 border-gray-300" 
+              />
+              <span className="text-xs font-bold text-gray-800 dark:text-gray-200">COD Collected</span>
+            </label>
+          )}
+          
+          <button onClick={() => onViewDetails(order)} className="flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 transition-colors">
+            {viewMode === 'admin' ? 'Manage Order' : 'Track Order'} <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
