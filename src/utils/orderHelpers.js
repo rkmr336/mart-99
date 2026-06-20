@@ -15,9 +15,12 @@ export const calculateGST = (subtotal) => {
   return { cgst, sgst, gst: cgst + sgst }; // Return separated details
 };
 
-// Delivery charge calculation
+// Delivery charge calculation — Free delivery on orders ₹499+
+export const DELIVERY_FEE = 30;
+export const FREE_DELIVERY_THRESHOLD = 499;
+
 export const calculateDeliveryCharge = (subtotal) => {
-  return subtotal >= 500 ? 0 : 40;
+  return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
 };
 
 // Estimated delivery time
