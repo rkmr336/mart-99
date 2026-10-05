@@ -66,11 +66,12 @@ const ProductCard = ({ product }) => {
         <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-red-500 text-red-500 dark:text-red-500' : ''}`} />
       </button>
 
-      {/* Discount badge */}
+      {/* Discount vertical ribbon */}
       {product.discount > 0 && (
-        <span className="absolute top-12 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500 text-white shadow-sm">
-          {product.discount}% OFF
-        </span>
+        <div className="absolute top-0 left-4 z-20 flex flex-col items-center justify-center bg-green-500 text-white rounded-b-lg px-2 py-1.5 shadow-md">
+          <span className="text-[11px] font-black leading-none">{product.discount}%</span>
+          <span className="text-[9px] font-bold uppercase tracking-wide leading-none mt-0.5">OFF</span>
+        </div>
       )}
 
       {/* Product Image */}
