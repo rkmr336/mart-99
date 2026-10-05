@@ -101,9 +101,9 @@ const ProductCard = ({ product }) => {
         {/* Price Row */}
         <div className="flex items-center justify-between mt-auto">
           <div className="flex flex-col">
-            <span className="text-lg font-black text-gray-900 dark:text-white">₹{product.price}</span>
+            <span className="text-2xl font-black text-gray-900 dark:text-white">₹{product.price}</span>
             {product.originalPrice && (
-              <span className="text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
+              <span className="text-sm text-gray-400 line-through">₹{product.originalPrice}</span>
             )}
           </div>
 
