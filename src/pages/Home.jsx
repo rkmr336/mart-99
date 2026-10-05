@@ -14,7 +14,6 @@ const OFFERS = [
 const FEATURES = [
   { icon: <Truck className="w-6 h-6" />, title: 'Fast Delivery', sub: 'Same-day & next-day' },
   { icon: <Shield className="w-6 h-6" />, title: '100% Genuine', sub: 'Authentic branded products' },
-  { icon: <RefreshCw className="w-6 h-6" />, title: 'Easy Returns', sub: '7-day return policy' },
   { icon: <Zap className="w-6 h-6" />, title: 'Best Prices', sub: 'Lowest price guarantee' },
 ];
 
@@ -61,7 +60,7 @@ const Home = () => {
       {/* Feature strips */}
       <div className="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-gray-100 dark:divide-slate-700">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-slate-700">
             {FEATURES.map(f => (
               <div key={f.title} className="flex items-center gap-3 p-4 md:p-5">
                 <div className="p-2 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg flex-shrink-0">

@@ -122,7 +122,7 @@ const Navbar = () => {
         {/* Category strip */}
         <div className="border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-2 text-sm font-medium">
+            <div className="flex items-center justify-center gap-1 overflow-x-auto scrollbar-none py-2 text-sm font-medium">
               {[
                 { label: '🛒 All', path: '/products' },
                 { label: '🥛 Dairy', path: '/products?cat=Dairy' },
