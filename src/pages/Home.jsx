@@ -48,12 +48,12 @@ const Home = () => {
     <div className="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
 
       {/* Hero Banner */}
-      <div className="w-full bg-[#d00000] dark:bg-slate-900">
-        <Link to="/products" className="block max-w-[1600px] mx-auto cursor-pointer hover:opacity-95 transition-opacity">
+      <div className="w-full pt-4 pb-2 px-4 sm:px-6 lg:px-8">
+        <Link to="/products" className="block max-w-7xl mx-auto cursor-pointer hover:opacity-95 transition-opacity rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-slate-700">
           <img 
-            src="/hero-banner.png" 
+            src="/hero-banner.png?v=2" 
             alt="Sab Kuch Yahaan, Best Daam Pe!" 
-            className="w-full h-auto object-contain"
+            className="w-full h-auto object-cover"
           />
         </Link>
       </div>
