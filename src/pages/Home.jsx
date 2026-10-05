@@ -48,45 +48,14 @@ const Home = () => {
     <div className="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
 
       {/* Hero Banner */}
-      <div className="bg-gradient-to-br from-red-600 via-red-700 to-orange-600 dark:from-red-900 dark:via-red-800 dark:to-orange-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 flex flex-col md:flex-row items-center gap-8">
-          <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-4">
-              <span>🎉</span> Fresh Arrivals Every Day
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
-              Sab Kuch Yahaan,<br />
-              <span className="text-yellow-300">Best Daam Pe!</span>
-            </h1>
-            <p className="text-red-100 text-lg mb-8 max-w-lg">
-              Grocery • Dairy • Snacks • Household<br />
-              <span className="text-white font-semibold">Fast delivery • UPI • Cash on Delivery</span>
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <Link
-                to="/products"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-red-600 font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 text-base"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                Shopping Shuru Karo
-              </Link>
-              <Link
-                to="/orders"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white/10 border border-white/30 text-white font-semibold rounded-full hover:bg-white/20 transition-all duration-200 text-base"
-              >
-                Order Track Karo
-              </Link>
-            </div>
-          </div>
-          {/* Hero graphic */}
-          <div className="flex-1 flex justify-center">
-            <div className="relative w-64 h-64 md:w-80 md:h-80">
-              <div className="absolute inset-0 bg-white/10 rounded-full animate-pulse" />
-              <div className="absolute inset-4 bg-white/10 rounded-full" />
-              <div className="absolute inset-0 flex items-center justify-center text-9xl">🛒</div>
-            </div>
-          </div>
-        </div>
+      <div className="w-full bg-[#d00000] dark:bg-slate-900">
+        <Link to="/products" className="block max-w-[1600px] mx-auto cursor-pointer hover:opacity-95 transition-opacity">
+          <img 
+            src="/hero-banner.png" 
+            alt="Sab Kuch Yahaan, Best Daam Pe!" 
+            className="w-full h-auto object-contain"
+          />
+        </Link>
       </div>
 
       {/* Feature strips */}
