@@ -17,13 +17,12 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
   }
 
   if (requireAdmin) {
-    // 🔐 ADMIN LOCK: Add your shop owner email here!
+    // ADMIN LOCK: Add your shop owner email here!
     const ADMIN_EMAILS = [
-      'mart811311@gmail.com',         // <--- Change this to your real email
-      'admin@rohitmart99.com'    // <--- You can add multiple emails
+      'mart811311@gmail.com',         // <--- Your real email
     ];
 
-    if (!ADMIN_EMAILS.includes(currentUser?.email)) {
+    if (!ADMIN_EMAILS.includes(currentUser?.email?.toLowerCase())) {
       return <Navigate to="/" />; // Redirects normal users to home
     }
   }
