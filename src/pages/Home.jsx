@@ -49,13 +49,13 @@ const Home = () => {
 
       {/* Hero Banner */}
       <div className="w-full bg-[#d00000] dark:bg-slate-900">
-        <Link to="/products" className="block max-w-[1600px] mx-auto cursor-pointer hover:opacity-95 transition-opacity">
+        <div className="block max-w-[1600px] mx-auto">
           <img 
-            src="/hero-banner.png" 
+            src="/Fresh%20Groceries,%20Best%20Prices.png" 
             alt="Sab Kuch Yahaan, Best Daam Pe!" 
             className="w-full h-auto object-contain"
           />
-        </Link>
+        </div>
       </div>
 
       {/* Feature strips */}
