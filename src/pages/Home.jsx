@@ -51,7 +51,7 @@ const Home = () => {
       <div className="w-full bg-[#d00000] dark:bg-slate-900">
         <div className="block max-w-[1600px] mx-auto">
           <img 
-            src="/Fresh%20Groceries,%20Best%20Prices.png" 
+            src="/hero-banner.png" 
             alt="Sab Kuch Yahaan, Best Daam Pe!" 
             className="w-full h-auto object-contain"
           />
