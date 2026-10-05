@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Truck, Shield, RefreshCw, ChevronRight, Zap } from 'lucide-react';
 import { getProducts } from '../firebase/firestore';
 import ProductCard from '../components/ProductCard';
+import { useWishlist } from '../context/WishlistContext';
 
 const OFFERS = [
   { color: 'from-red-600 to-orange-500', title: 'Best Deals Today', sub: 'Up to 20% off on Dairy', link: '/products?cat=Dairy', emoji: '🥛' },
@@ -19,6 +20,7 @@ const FEATURES = [
 
 const Home = () => {
   const [featured, setFeatured] = useState([]);
+  const { wishlist } = useWishlist();
 
   useEffect(() => {
     const fetchHomeProducts = async () => {
@@ -125,6 +127,22 @@ const Home = () => {
             </Link>
           ))}
         </div>
+
+        {/* Wishlist Section */}
+        {wishlist && wishlist.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
+                ❤️ My Wishlist
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {wishlist.map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Popular Products */}
         <section>

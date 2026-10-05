@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Sun, Moon, Search, Menu, X, MapPin } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Sun, Moon, Search, Menu, X, MapPin, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useTheme } from '../context/ThemeContext';
 import { logoutUser } from '../firebase/auth';
 
 const Navbar = () => {
   const { currentUser } = useAuth();
   const { totalItems } = useCart();
+  const { wishlist } = useWishlist();
   const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -71,6 +73,16 @@ const Navbar = () => {
               <button onClick={toggleTheme} className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
                 {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </button>
+
+              {/* Wishlist */}
+              <Link to="/wishlist" className="relative p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                <Heart className="w-5 h-5" />
+                {wishlist?.length > 0 && (
+                  <span className="absolute 0 top-0 right-0 bg-brand-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-white dark:border-slate-900">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
 
               {/* Cart */}
               <Link to="/cart" className="relative flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold text-sm transition-colors shadow-sm">

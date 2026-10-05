@@ -1,5 +1,6 @@
 import { useCart } from '../context/CartContext';
-import { Plus, Minus } from 'lucide-react';
+import { useWishlist } from '../context/WishlistContext';
+import { Plus, Minus, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -14,10 +15,12 @@ const badgeStyles = {
 
 const ProductCard = ({ product }) => {
   const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
 
   // Check karo ki ye product cart mein hai ya nahi
   const cartItem = cart.find(item => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
+  const isWishlisted = isInWishlist(product.id);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -55,9 +58,17 @@ const ProductCard = ({ product }) => {
         </span>
       )}
 
+      {/* Wishlist Button */}
+      <button 
+        onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+        className="absolute top-3 right-3 z-20 p-1.5 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm text-gray-400 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-white transition-all shadow-sm"
+      >
+        <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-red-500 text-red-500 dark:text-red-500' : ''}`} />
+      </button>
+
       {/* Discount badge */}
       {product.discount > 0 && (
-        <span className="absolute top-3 right-3 z-10 text-xs font-bold px-2 py-1 rounded-full bg-green-500 text-white">
+        <span className="absolute top-12 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500 text-white shadow-sm">
           {product.discount}% OFF
         </span>
       )}

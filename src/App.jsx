@@ -3,10 +3,12 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { WishlistProvider } from './context/WishlistContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import Cart from './pages/Cart';
+import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -24,9 +26,10 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <CartProvider>
-          <Router>
-            <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900 transition-colors duration-300">
+        <WishlistProvider>
+          <CartProvider>
+            <Router>
+              <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900 transition-colors duration-300">
               <Navbar />
               <main className="flex-grow pt-28">
                 <Routes>
@@ -34,6 +37,7 @@ function App() {
                   <Route path="/products" element={<Products />} />
                   <Route path="/products/:id" element={<ProductDetail />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
                   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                   <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
@@ -50,6 +54,7 @@ function App() {
             <Toaster position="bottom-right" />
           </Router>
         </CartProvider>
+        </WishlistProvider>
       </AuthProvider>
     </ThemeProvider>
   );
