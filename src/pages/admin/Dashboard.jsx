@@ -60,24 +60,42 @@ const Dashboard = () => {
     }
   };
 
-  // Math aggregates
-  const totalOrders = orders.length;
-  const uniqueCustomers = new Set(orders.map(o => o.userId)).size;
-  
-  // Only count revenue from Delivered orders where COD is collected
+  // Helper: check if order is paid online
+  const isOnlineOrder = (order) => {
+    return order.paymentMethod !== 'COD' || !!order.paymentId;
+  };
+
+  // Total Revenue:
+  // - Online payments are instantly received/paid (once placed, except cancelled)
+  // - COD orders add to revenue once marked as collected
   const totalRevenue = orders.reduce((sum, order) => {
-    if (order.orderStatus === 'delivered' && order.deliveryDetails?.codCollected) {
+    if (order.orderStatus === 'cancelled') return sum;
+
+    if (isOnlineOrder(order)) {
+      return sum + (order.pricing?.total || 0);
+    }
+
+    // For COD: add when codCollected is true
+    if (order.deliveryDetails?.codCollected) {
       return sum + (order.pricing?.total || 0);
     }
     return sum;
   }, 0);
 
+  // Pending COD to Collect:
+  // - ONLY applies to COD orders that have NOT yet been marked collected and are NOT cancelled
   const pendingCodAmount = orders.reduce((sum, order) => {
-    if (order.orderStatus === 'out_for_delivery' || (order.orderStatus === 'delivered' && !order.deliveryDetails?.codCollected)) {
+    if (order.orderStatus === 'cancelled') return sum;
+
+    if (!isOnlineOrder(order) && !order.deliveryDetails?.codCollected) {
       return sum + (order.pricing?.total || 0);
     }
     return sum;
   }, 0);
+
+  // Math aggregates
+  const totalOrders = orders.length;
+  const uniqueCustomers = new Set(orders.map(o => o.userId)).size;
 
   const filteredOrders = useMemo(() => {
     let result = orders;
@@ -133,7 +151,7 @@ const Dashboard = () => {
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total COD Collected</p>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Revenue</p>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">₹{totalRevenue.toLocaleString('en-IN')}</h3>
           </div>
         </div>

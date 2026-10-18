@@ -158,7 +158,7 @@ const Checkout = () => {
         deliveryDetails: {
           estimatedTime: getEstimatedDelivery(),
           actualDeliveryTime: null,
-          codCollected: false
+          codCollected: paymentMethod !== 'COD'
         }
       };
 

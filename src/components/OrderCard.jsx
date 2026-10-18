@@ -49,16 +49,15 @@ const OrderCard = ({ order, viewMode = 'user', onStatusUpdate, onViewDetails }) 
         </div>
         <div className="flex flex-col items-start md:items-end gap-2">
           <p className="font-extrabold text-lg text-gray-900 dark:text-white">{formatCurrency(order.pricing?.total || 0)}</p>
-          <div className="flex gap-2 w-full md:w-auto">
-            {viewMode === 'admin' ? renderStatusDropdown() : (
-              <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex items-center ${
-                order.paymentMethod === 'COD' 
-                ? 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300' 
-                : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-              }`}>
-                {order.paymentMethod === 'COD' ? '💵 COD' : '✅ Online'}
-              </span>
-            )}
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center ${
+              order.paymentMethod === 'COD' 
+              ? 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300' 
+              : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+            }`}>
+              {order.paymentMethod === 'COD' ? '💵 COD' : '✅ Online Paid'}
+            </span>
+            {viewMode === 'admin' && renderStatusDropdown()}
           </div>
         </div>
       </div>
