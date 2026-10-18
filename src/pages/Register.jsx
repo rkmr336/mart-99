@@ -11,7 +11,6 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [shopName, setShopName] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -31,8 +30,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const displayName = role === 'admin' && shopName.trim() ? `${name} (${shopName.trim()})` : name;
-      await registerUser(email, password, displayName, role);
+      await registerUser(email, password, name, role);
       
       if (role === 'admin') {
         toast.success('Shop Owner account created! Welcome to Dashboard.');
@@ -103,12 +101,12 @@ const Register = () => {
         {role === 'admin' ? (
           <div className="p-3 rounded-xl bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/40 text-orange-800 dark:text-orange-300 text-xs flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 flex-shrink-0 text-orange-600 dark:text-orange-400" />
-            <span>Register as Shop Owner / Client to manage live orders & store catalog.</span>
+            <span>Shop Owner mode: Direct Mart 99 access to manage live orders & store dashboard.</span>
           </div>
         ) : (
           <div className="p-3 rounded-xl bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-900/40 text-brand-800 dark:text-brand-300 text-xs flex items-center gap-2">
             <ShoppingBag className="w-4 h-4 flex-shrink-0 text-brand-600 dark:text-brand-400" />
-            <span>Register as Customer to purchase items, track orders and save addresses.</span>
+            <span>Customer mode: Purchase items, track orders and save delivery addresses.</span>
           </div>
         )}
 
@@ -127,21 +125,6 @@ const Register = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-
-            {role === 'admin' && (
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                  Shop / Business Name (Optional)
-                </label>
-                <input
-                  type="text"
-                  className="appearance-none rounded-xl relative block w-full px-3.5 py-3 border border-gray-300 dark:border-slate-600 placeholder-gray-400 text-gray-900 dark:text-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-all"
-                  placeholder="e.g. Mart 99 Central Store"
-                  value={shopName}
-                  onChange={(e) => setShopName(e.target.value)}
-                />
-              </div>
-            )}
 
             <div>
               <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
