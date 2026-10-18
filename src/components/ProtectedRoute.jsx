@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children, requireAdmin = false }) => {
+const ProtectedRoute = ({ children, requireAdmin = false, preventAdmin = false }) => {
   const { currentUser, userData, loading } = useAuth();
 
   if (loading) {
@@ -16,13 +16,21 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
     return <Navigate to="/login" />;
   }
 
-  if (requireAdmin) {
-    // Check if user has admin/shop owner role or admin custom property
-    const isAdmin = userData?.role === 'admin' || userData?.role === 'owner';
+  const AUTHORIZED_OWNER_EMAILS = [
+    'businessbr53@gmail.com',
+  ];
+  const userEmail = currentUser?.email?.toLowerCase();
+  const isAuthorizedOwner = AUTHORIZED_OWNER_EMAILS.includes(userEmail) || userData?.role === 'admin' || userData?.role === 'owner';
 
-    if (!isAdmin) {
-      return <Navigate to="/" replace />; // Redirects normal customers to home
+  if (requireAdmin) {
+    if (!isAuthorizedOwner) {
+      return <Navigate to="/" replace />; // Redirects unauthorized users to home
     }
+  }
+
+  // Prevent shop owner from accessing customer-only checkout/orders pages
+  if (preventAdmin && isAuthorizedOwner) {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return children;

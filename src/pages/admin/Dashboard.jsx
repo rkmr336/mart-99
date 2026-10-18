@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Package, Users, ShoppingBag, TrendingUp, Settings, Search } from 'lucide-react';
 import { getAllOrdersAdmin, getProducts, updateOrderStatus, updateOrderCodCollection } from '../../firebase/firestore';
+import { logoutUser } from '../../firebase/auth';
 import OrderCard from '../../components/OrderCard';
 import OrderDetailsModal from '../../components/OrderDetailsModal';
 import toast from 'react-hot-toast';
@@ -139,9 +140,12 @@ const Dashboard = () => {
           <Link to="/admin/seed" className="text-sm bg-gray-100 dark:bg-slate-700 font-medium px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-700 dark:text-gray-300">
             Migration Utility
           </Link>
-          <Link to="/profile" className="text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-300 font-medium bg-brand-50 dark:bg-brand-900/20 px-4 py-2 rounded-lg transition-colors">
-            Exit Admin
-          </Link>
+          <button 
+            onClick={() => logoutUser()} 
+            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-semibold bg-red-50 dark:bg-red-900/20 px-4 py-2 rounded-lg transition-colors border border-red-200 dark:border-red-900/30"
+          >
+            Logout
+          </button>
         </div>
       </div>
 

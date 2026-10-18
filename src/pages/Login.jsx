@@ -23,22 +23,25 @@ const Login = () => {
       const userRole = userDocData?.role || 'user';
 
       if (role === 'admin') {
-        if (userRole !== 'admin' && userRole !== 'owner') {
-          toast.error('This account is registered as Customer. Please switch to Customer login or sign up as Shop Owner.');
+        const authorizedOwnerEmails = ['businessbr53@gmail.com'];
+        if (!authorizedOwnerEmails.includes(user.email?.toLowerCase())) {
+          toast.error('Access denied. Only authorized shop owner can access Dashboard.');
           setLoading(false);
           return;
         }
         toast.success('Welcome to Shop Owner Dashboard!');
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard', { replace: true });
       } else {
         // Customer login
-        toast.success('Welcome back!');
-        if (userRole === 'admin' || userRole === 'owner') {
-          // If shop owner logs in under customer tab, give them option or take home
-          navigate('/');
-        } else {
-          navigate('/');
+        const authorizedOwnerEmails = ['businessbr53@gmail.com'];
+        if (authorizedOwnerEmails.includes(user.email?.toLowerCase())) {
+          // If shop owner logs in, redirect directly to admin dashboard
+          toast.success('Welcome Shop Owner!');
+          navigate('/admin/dashboard', { replace: true });
+          return;
         }
+        toast.success('Welcome back!');
+        navigate('/');
       }
     } catch (error) {
       console.error(error);

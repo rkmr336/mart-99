@@ -30,11 +30,20 @@ const Register = () => {
 
     setLoading(true);
     try {
+      if (role === 'admin') {
+        const authorizedOwnerEmails = ['businessbr53@gmail.com'];
+        if (!authorizedOwnerEmails.includes(email.trim().toLowerCase())) {
+          toast.error('Only the authorized business email (businessbr53@gmail.com) can register as Shop Owner.');
+          setLoading(false);
+          return;
+        }
+      }
+
       await registerUser(email, password, name, role);
       
       if (role === 'admin') {
         toast.success('Shop Owner account created! Welcome to Dashboard.');
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard', { replace: true });
       } else {
         toast.success('Account created successfully! Welcome to Mart 99.');
         navigate('/');

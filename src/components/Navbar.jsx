@@ -25,6 +25,59 @@ const Navbar = () => {
     if (search.trim()) navigate(`/products?search=${encodeURIComponent(search.trim())}`);
   };
 
+  const isOwner = currentUser?.email?.toLowerCase() === 'businessbr53@gmail.com' || userData?.role === 'admin' || userData?.role === 'owner';
+
+  // Dedicated View for Shop Owner (Client): No shopping clutter, strictly store management
+  if (isOwner) {
+    return (
+      <nav className="fixed w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-orange-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            
+            {/* Logo + Store Management Badge */}
+            <div className="flex items-center gap-3">
+              <Link to="/admin/dashboard" className="flex items-center gap-2 group">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
+                  <ShoppingCart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                  Mart <span className="text-orange-500">99</span>
+                </span>
+              </Link>
+              <span className="bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-orange-200 dark:border-orange-900/50">
+                Owner Portal
+              </span>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={toggleTheme} 
+                className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                title="Toggle Theme"
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </button>
+
+              <div className="hidden sm:flex items-center text-xs text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-slate-700 pr-3">
+                <span className="font-semibold text-gray-800 dark:text-gray-200">{currentUser?.email}</span>
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 px-3.5 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-950/30 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold transition-all border border-red-200 dark:border-red-900/30"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav className="fixed w-full z-50 transition-colors duration-300">
       {/* Top strip */}
@@ -98,15 +151,6 @@ const Navbar = () => {
               {/* User */}
               {currentUser ? (
                 <div className="flex items-center gap-1">
-                  {(userData?.role === 'admin' || userData?.role === 'owner') && (
-                    <Link
-                      to="/admin/dashboard"
-                      className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-orange-500/20 mr-1"
-                      title="Shop Owner Dashboard"
-                    >
-                      <span>Dashboard</span>
-                    </Link>
-                  )}
                   <Link to="/profile" className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors" title="My Profile">
                     <User className="w-5 h-5" />
                   </Link>

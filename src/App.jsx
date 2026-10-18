@@ -22,6 +22,36 @@ import SeedDatabase from './pages/admin/SeedDatabase';
 import OrderSuccess from './pages/OrderSuccess';
 import OrderTracking from './pages/OrderTracking';
 
+const AppContent = () => {
+  const { currentUser, userData } = useAuth();
+  const isOwner = currentUser?.email?.toLowerCase() === 'businessbr53@gmail.com' || userData?.role === 'admin' || userData?.role === 'owner';
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900 transition-colors duration-300">
+      <Navbar />
+      <main className={`flex-grow ${isOwner ? 'pt-20' : 'pt-28'}`}>
+        <Routes>
+          <Route path="/" element={isOwner ? <ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute> : <Home />} />
+          <Route path="/products" element={isOwner ? <ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute> : <Products />} />
+          <Route path="/products/:id" element={isOwner ? <ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute> : <ProductDetail />} />
+          <Route path="/cart" element={isOwner ? <ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute> : <Cart />} />
+          <Route path="/wishlist" element={isOwner ? <ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute> : <Wishlist />} />
+          <Route path="/checkout" element={<ProtectedRoute preventAdmin={true}><Checkout /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute preventAdmin={true}><Profile /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute preventAdmin={true}><Orders /></ProtectedRoute>} />
+          <Route path="/success/:id" element={<ProtectedRoute preventAdmin={true}><OrderSuccess /></ProtectedRoute>} />
+          <Route path="/track/:id" element={<ProtectedRoute preventAdmin={true}><OrderTracking /></ProtectedRoute>} />
+          <Route path="/admin/dashboard" element={<ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/seed" element={<ProtectedRoute requireAdmin={true}><SeedDatabase /></ProtectedRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
+      {!isOwner && <Footer />}
+    </div>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider>
@@ -29,31 +59,10 @@ function App() {
         <WishlistProvider>
           <CartProvider>
             <Router>
-              <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900 transition-colors duration-300">
-              <Navbar />
-              <main className="flex-grow pt-28">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                  <Route path="/success/:id" element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
-                  <Route path="/track/:id" element={<ProtectedRoute><OrderTracking /></ProtectedRoute>} />
-                  <Route path="/admin/dashboard" element={<ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute>} />
-                  <Route path="/admin/seed" element={<ProtectedRoute requireAdmin={true}><SeedDatabase /></ProtectedRoute>} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-            <Toaster position="bottom-right" />
-          </Router>
-        </CartProvider>
+              <AppContent />
+              <Toaster position="bottom-right" />
+            </Router>
+          </CartProvider>
         </WishlistProvider>
       </AuthProvider>
     </ThemeProvider>
