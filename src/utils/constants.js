@@ -23,7 +23,7 @@ export const FREE_DELIVERY_THRESHOLD = 500;
 export const DELIVERY_CHARGE = 40;
 
 export const CUSTOMER_CARE = {
-  phone: "+91-9876543210",
-  whatsapp: "+91-9876543210",
+  phone: "+91-934133xxxx", 
+  whatsapp: "+91-934133xxxx",
   email: "support@rohitmart99.com"
 };
