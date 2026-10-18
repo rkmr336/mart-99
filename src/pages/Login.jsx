@@ -163,15 +163,21 @@ const Login = () => {
           </div>
         </form>
 
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
-          <Link 
-            to={`/register?role=${role}`} 
-            className="font-bold text-brand-600 dark:text-brand-400 hover:text-brand-500 underline underline-offset-2"
-          >
-            Sign up as {role === 'admin' ? 'Shop Owner' : 'Customer'}
-          </Link>
-        </p>
+        {role === 'user' ? (
+          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{' '}
+            <Link 
+              to="/register" 
+              className="font-bold text-brand-600 dark:text-brand-400 hover:text-brand-500 underline underline-offset-2"
+            >
+              Sign up as Customer
+            </Link>
+          </p>
+        ) : (
+          <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+            Shop Owner portal is restricted to authorized Mart 99 administration.
+          </p>
+        )}
       </div>
     </div>
   );
