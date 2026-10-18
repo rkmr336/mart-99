@@ -37,6 +37,14 @@ const Register = () => {
           setLoading(false);
           return;
         }
+      } else {
+        // Prevent registering the shop owner email as a regular customer
+        const authorizedOwnerEmails = ['businessbr53@gmail.com'];
+        if (authorizedOwnerEmails.includes(email.trim().toLowerCase())) {
+          toast.error('This email is reserved for Shop Owner. Please select the "Shop Owner" tab.');
+          setLoading(false);
+          return;
+        }
       }
 
       await registerUser(email, password, name, role);

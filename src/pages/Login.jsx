@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, getUserDoc } from '../firebase/auth';
+import { loginUser, getUserDoc, logoutUser } from '../firebase/auth';
 import { ShoppingBag, Store, ArrowRight, ShieldCheck, UserCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -35,9 +35,10 @@ const Login = () => {
         // Customer login
         const authorizedOwnerEmails = ['businessbr53@gmail.com'];
         if (authorizedOwnerEmails.includes(user.email?.toLowerCase())) {
-          // If shop owner logs in, redirect directly to admin dashboard
-          toast.success('Welcome Shop Owner!');
-          navigate('/admin/dashboard', { replace: true });
+          // Do not allow shop owner account to login via customer tab
+          await logoutUser();
+          toast.error('This is a Shop Owner account. Please switch to the "Shop Owner" tab to log in.');
+          setLoading(false);
           return;
         }
         toast.success('Welcome back!');
