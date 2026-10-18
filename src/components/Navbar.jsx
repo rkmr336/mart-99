@@ -8,7 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 import { logoutUser } from '../firebase/auth';
 
 const Navbar = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, userData } = useAuth();
   const { totalItems } = useCart();
   const { wishlist } = useWishlist();
   const { theme, toggleTheme } = useTheme();
@@ -98,10 +98,19 @@ const Navbar = () => {
               {/* User */}
               {currentUser ? (
                 <div className="flex items-center gap-1">
-                  <Link to="/profile" className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  {(userData?.role === 'admin' || userData?.role === 'owner') && (
+                    <Link
+                      to="/admin/dashboard"
+                      className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-orange-500/20 mr-1"
+                      title="Shop Owner Dashboard"
+                    >
+                      <span>Dashboard</span>
+                    </Link>
+                  )}
+                  <Link to="/profile" className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors" title="My Profile">
                     <User className="w-5 h-5" />
                   </Link>
-                  <button onClick={handleLogout} className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  <button onClick={handleLogout} className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors" title="Logout">
                     <LogOut className="w-5 h-5" />
                   </button>
                 </div>
@@ -154,6 +163,11 @@ const Navbar = () => {
           <Link to="/products" onClick={() => setMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 py-2 border-b dark:border-slate-800">Products</Link>
           {currentUser ? (
             <>
+              {(userData?.role === 'admin' || userData?.role === 'owner') && (
+                <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)} className="block font-bold text-orange-600 dark:text-orange-400 py-2 border-b dark:border-slate-800">
+                  Shop Owner Dashboard
+                </Link>
+              )}
               <Link to="/profile" onClick={() => setMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 py-2 border-b dark:border-slate-800">My Profile</Link>
               <Link to="/orders" onClick={() => setMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 py-2 border-b dark:border-slate-800">Orders</Link>
               <button onClick={handleLogout} className="block text-red-600 py-2">Logout</button>

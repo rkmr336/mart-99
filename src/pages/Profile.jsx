@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Package, User, MapPin, Plus } from 'lucide-react';
+import { LogOut, Package, User, MapPin, Plus, Store } from 'lucide-react';
 import { logoutUser } from '../firebase/auth';
 import { getUserAddresses, saveAddress } from '../firebase/firestore';
 import { Link } from 'react-router-dom';
@@ -41,9 +41,23 @@ const Profile = () => {
               {userData?.name?.charAt(0) || currentUser?.email?.charAt(0) || 'U'}
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white transition-colors">{userData?.name || 'User'}</h2>
+            <div className="mt-1 mb-2">
+              <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                userData?.role === 'admin' || userData?.role === 'owner'
+                  ? 'bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-900/40'
+                  : 'bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-400 border border-brand-200 dark:border-brand-900/40'
+              }`}>
+                {userData?.role === 'admin' || userData?.role === 'owner' ? 'Shop Owner' : 'Customer'}
+              </span>
+            </div>
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 transition-colors">{currentUser?.email}</p>
             
             <nav className="w-full space-y-2 text-left">
+              {(userData?.role === 'admin' || userData?.role === 'owner') && (
+                <Link to="/admin/dashboard" className="flex items-center space-x-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 font-semibold transition-colors">
+                  <Store className="w-5 h-5" /> <span>Shop Dashboard</span>
+                </Link>
+              )}
               <Link to="/profile" className="flex items-center space-x-3 p-3 rounded-lg bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400 font-medium transition-colors">
                 <User className="w-5 h-5" /> <span>My Profile</span>
               </Link>

@@ -7,13 +7,13 @@ import {
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './config';
 
-export const registerUser = async (email, password, name) => {
+export const registerUser = async (email, password, name, role = 'user') => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   // Create user document in Firestore
   await setDoc(doc(db, 'users', result.user.uid), {
     name,
     email,
-    role: 'user',
+    role, // 'user' (Customer) or 'admin' (Shop Owner / Client)
     addresses: [],
     phone: '',
     createdAt: new Date().toISOString()
