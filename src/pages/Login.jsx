@@ -14,17 +14,23 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (role === 'admin') {
+      const authorizedOwnerEmails = ['businessbr53@gmail.com'];
+      if (!authorizedOwnerEmails.includes(email.trim().toLowerCase())) {
+        toast.error('Access denied. Only authorized shop owner can access Dashboard.');
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       const userCredential = await loginUser(email, password);
       const user = userCredential.user;
-      
-      // Fetch Firestore user doc to verify user's role
-      const userDocData = await getUserDoc(user.uid);
-      const userRole = userDocData?.role || 'user';
 
       if (role === 'admin') {
         const authorizedOwnerEmails = ['businessbr53@gmail.com'];
         if (!authorizedOwnerEmails.includes(user.email?.toLowerCase())) {
+          await logoutUser();
           toast.error('Access denied. Only authorized shop owner can access Dashboard.');
           setLoading(false);
           return;
